@@ -13,7 +13,7 @@ public class BackGroundScroller : MonoBehaviour
     [Range(0.01f, 0.2f)]
     [SerializeField] float grassSpeed = 0.2f;
 
-    [Range(0.01f, 0.3f)]
+    [Range(0.01f, 0.5f)]
     [SerializeField] float groundSpeed = 0.3f;
 
     private void FixedUpdate()

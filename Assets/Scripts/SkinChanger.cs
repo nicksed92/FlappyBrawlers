@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,28 +7,74 @@ public class SkinChanger : MonoBehaviour
 {
     [SerializeField] private float _startScrollPositionX;
     [SerializeField] private GameObject _skinTemplate;
-    [SerializeField] private Transform _conteiner;
+    [SerializeField] private Transform _content;
     [SerializeField] private Sprite[] _skins;
 
+    private Player _player;
     private RectTransform _rectTransform;
-    private Image _image;
-    private Button _button;
-    private Text _buttonText;
+    private List<SkinTemplate> _skinTemplates = new();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _rectTransform = GetComponent<RectTransform>();
+        _player = FindObjectOfType<Player>();
+        _player.GetComponent<SpriteRenderer>().sprite = _skins[_player.EquipedSkinID];
+        _rectTransform = _content.GetComponent<RectTransform>();
+        _rectTransform.anchoredPosition = new Vector3(_startScrollPositionX, 0, 0);
 
+        StartCoroutine(InitSkins());
+    }
+
+    private IEnumerator InitSkins()
+    {
+        CreateTemplates();
+        ShowUnlockedSkins();
+
+        yield return null;
+    }
+
+    private void CreateTemplates()
+    {
         for (int i = 0; i < _skins.Length; i++)
         {
-            GameObject template = Instantiate(_skinTemplate, _conteiner);
-            _image = template.transform.GetChild(0).GetComponent<Image>();
-            _image.sprite = _skins[i];
-            _image.color = Color.black;
-            //_button = template.transform.GetChild(1).GetComponent<Button>();
-        }
+            GameObject template = Instantiate(_skinTemplate, _content);
 
-        _rectTransform.anchoredPosition = new Vector3(_startScrollPositionX, 0, 0);
+            SkinTemplate skinTemplate = new()
+            {
+                Button = template.transform.GetChild(1).GetComponent<Button>(),
+                Text = template.transform.GetChild(1).GetComponent<Button>().transform.GetChild(0).GetComponent<Text>(),
+                Image = template.transform.GetChild(0).GetComponent<Image>(),
+                ButtonID = i
+            };
+
+            _skinTemplates.Add(skinTemplate);
+
+            skinTemplate.Image.sprite = _skins[i];
+            skinTemplate.Image.color = Color.black;
+
+            skinTemplate.Button.onClick.AddListener(() => EquipSkin(skinTemplate.ButtonID));
+        }
+    }
+
+    private void ShowUnlockedSkins()
+    {
+        for (int i = 0; i < _player.UnlockedSkinsID.Count; i++)
+        {
+            _skinTemplates[i].Image.color = Color.white;
+            _skinTemplates[i].Button.interactable = true;
+            _skinTemplates[i].Text.text = "Equip";
+
+            if (i == _player.EquipedSkinID)
+            {
+                _skinTemplates[i].Text.text = "Equiped";
+                _skinTemplates[i].Button.interactable = false;
+            }
+        }
+    }
+
+    private void EquipSkin(int id)
+    {
+        _player.EquipedSkinID = id;
+
+        ShowUnlockedSkins();
     }
 }

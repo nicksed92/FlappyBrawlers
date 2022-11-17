@@ -2,21 +2,43 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float lifeTime = 7f;
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _lifeTime = 7f;
+    [SerializeField] private float _moveMinY = 1f;
+    [SerializeField] private float _moveMaxY = 1f;
 
-    void Start()
+    private void Start()
     {
-        Destroy(gameObject, lifeTime);
-    }
-
-    public void SetMoveSpeed(float value)
-    {
-        moveSpeed = Mathf.Clamp(value, 0, int.MaxValue);
+        SetPositionY();
+        Destroy(gameObject, _lifeTime);
     }
 
     private void FixedUpdate()
     {
-        transform.position = new Vector2(transform.position.x - moveSpeed * Time.deltaTime, transform.position.y);
+        Move();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<PlayerController>(out PlayerController playerController))
+        {
+            GlobalEvents.OnPlayerHit?.Invoke();
+            Debug.Log("Hit");
+        }
+    }
+
+    public void SetMoveSpeed(float value)
+    {
+        _moveSpeed = Mathf.Clamp(value, 0, int.MaxValue);
+    }
+
+    private void SetPositionY()
+    {
+        transform.position = new Vector2(transform.position.x, Utilites.GetRandomFloat(_moveMinY, _moveMaxY));
+    }
+
+    private void Move()
+    {
+        transform.position = new Vector2(transform.position.x - _moveSpeed * Time.deltaTime, transform.position.y);
     }
 }

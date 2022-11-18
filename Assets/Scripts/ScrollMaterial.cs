@@ -3,7 +3,14 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class ScrollMaterial : MonoBehaviour
 {
-    private bool isScrolling = true;
+    private enum BackGroundType
+    {
+        Ground,
+        Grass,
+        Sky
+    }
+
+    [SerializeField] private bool isScrolling = true;
 
     private enum ScrollOrientation
     {
@@ -13,12 +20,17 @@ public class ScrollMaterial : MonoBehaviour
 
     [SerializeField] private float _scrollSpeed;
     [SerializeField] private ScrollOrientation _scrollOrientation = ScrollOrientation.Horizontale;
+    [SerializeField] private BackGroundType _backGroundType;
 
     private Material _material;
 
     private void Awake()
     {
-        GlobalEvents.OnPlayerHit.AddListener(StopScrolling);
+        if (_backGroundType != BackGroundType.Sky)
+        {
+            GlobalEvents.OnPlayerHit.AddListener(StopScrolling);
+            GlobalEvents.OnStartClicked.AddListener(StartScrolling);
+        }
     }
 
     private void Start()
@@ -31,7 +43,12 @@ public class ScrollMaterial : MonoBehaviour
             SetTextureOffset();
     }
 
-    private void StopScrolling(int score)
+    private void StartScrolling()
+    {
+        isScrolling = true;
+    }
+
+    private void StopScrolling()
     {
         isScrolling = false;
     }

@@ -7,7 +7,7 @@ public class GameOverScoreText : MonoBehaviour
 
     private void Awake()
     {
-        GlobalEvents.OnPlayerHit.AddListener(SetText);
+        GlobalEvents.OnScoreChanged.AddListener(SetText);
     }
 
     private void Start()

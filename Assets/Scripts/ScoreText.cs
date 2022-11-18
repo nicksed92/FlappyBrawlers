@@ -8,7 +8,7 @@ public class ScoreText : MonoBehaviour
 
     private void Awake()
     {
-        GlobalEvents.OnPointsChanged.AddListener(UpdateText);
+        GlobalEvents.OnScoreChanged.AddListener(UpdateText);
         GlobalEvents.OnPlayerHit.AddListener(HideText);
     }
 
@@ -22,7 +22,7 @@ public class ScoreText : MonoBehaviour
         _text.text = score.ToString();
     }
 
-    private void HideText(int score)
+    private void HideText()
     {
         gameObject.SetActive(false);
     }

@@ -9,7 +9,7 @@ public class ShowMenu : MonoBehaviour
         GlobalEvents.OnPlayerHit.AddListener(Show);
     }
 
-    private void Show(int score)
+    private void Show()
     {
         _panel.SetActive(true);
     }

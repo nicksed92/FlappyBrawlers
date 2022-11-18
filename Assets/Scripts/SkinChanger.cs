@@ -5,15 +5,21 @@ using UnityEngine.UI;
 
 public class SkinChanger : MonoBehaviour
 {
+    public Sprite[] _skins;
+
     [SerializeField] private float _startScrollPositionX;
     [SerializeField] private GameObject _skinTemplate;
     [SerializeField] private Transform _content;
-    [SerializeField] private Sprite[] _skins;
     [SerializeField] private int _ckinsCostMultiplier = 25;
 
     private Player _player;
     private RectTransform _rectTransform;
     private List<SkinTemplate> _skinTemplates = new();
+
+    private void Awake()
+    {
+        GlobalEvents.OnPlayerHit.AddListener(SetInteractiveButtons);
+    }
 
     private void Start()
     {
@@ -22,7 +28,19 @@ public class SkinChanger : MonoBehaviour
         _rectTransform = _content.GetComponent<RectTransform>();
         _rectTransform.anchoredPosition = new Vector3(_startScrollPositionX, 0, 0);
 
+        if (PlayerPrefs.HasKey("skinID"))
+            _player.GetComponent<SpriteRenderer>().sprite = _skins[PlayerPrefs.GetInt("skinID")];
+
         StartCoroutine(InitSkins());
+    }
+
+    private void SetInteractiveButtons()
+    {
+        for (int i = 0; i < _skinTemplates.Count; i++)
+        {
+            if (_player.Score >= _skinTemplates[i].PointsForUnlock && _skinTemplates[i].ButtonID != _player.EquipedSkinID && _player.UnlockedSkinsID.Contains(i - 1))
+                _skinTemplates[i].Button.interactable = true;
+        }
     }
 
     private IEnumerator InitSkins()
@@ -77,8 +95,19 @@ public class SkinChanger : MonoBehaviour
 
     private void EquipSkin(int id)
     {
-        _player.EquipedSkinID = id;
-        _player.GetComponent<SpriteRenderer>().sprite = _skins[id];
+        if (_player.UnlockedSkinsID.Contains(id) == false)
+        {
+            _player.Score -= _skinTemplates[id].PointsForUnlock;
+            _player.AddUnlockedSkin();
+            GlobalEvents.OnScoreChanged?.Invoke(_player.Score);
+            SetInteractiveButtons();
+        }
+        else
+        {
+            _player.EquipedSkinID = id;
+            PlayerPrefs.SetInt("skinID", id);
+            //_player.GetComponent<SpriteRenderer>().sprite = _skins[id];
+        }
 
         ShowUnlockedSkins();
     }

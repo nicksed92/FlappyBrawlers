@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         GlobalEvents.OnPlayerHit.AddListener(HidePanel);
+        GlobalEvents.OnStartClicked.AddListener(OnScreenClick);
     }
 
     private void Start()
@@ -31,7 +32,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    private void HidePanel(int score)
+    private void HidePanel()
     {
         _clickPanel.SetActive(false);
     }

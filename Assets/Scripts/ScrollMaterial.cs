@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class ScrollMaterial : MonoBehaviour
 {
+    private bool isScrolling = true;
+
     private enum ScrollOrientation
     {
         Horizontale,
@@ -14,13 +16,24 @@ public class ScrollMaterial : MonoBehaviour
 
     private Material _material;
 
+    private void Awake()
+    {
+        GlobalEvents.OnPlayerHit.AddListener(StopScrolling);
+    }
+
     private void Start()
     {
         _material = GetComponent<SpriteRenderer>().material;
     }
     private void FixedUpdate()
     {
-        SetTextureOffset();
+        if (isScrolling)
+            SetTextureOffset();
+    }
+
+    private void StopScrolling(int score)
+    {
+        isScrolling = false;
     }
 
     private void SetTextureOffset()

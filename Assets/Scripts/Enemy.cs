@@ -18,15 +18,6 @@ public class Enemy : MonoBehaviour
         Move();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent<PlayerController>(out PlayerController playerController))
-        {
-            GlobalEvents.OnPlayerHit?.Invoke();
-            Debug.Log("Hit");
-        }
-    }
-
     public void SetMoveSpeed(float value)
     {
         _moveSpeed = Mathf.Clamp(value, 0, int.MaxValue);

@@ -5,7 +5,7 @@ public class SceneLoader : MonoBehaviour
 {
     private void Awake()
     {
-        GlobalEvents.OnPlayerHit.AddListener(RestartScene);
+        GlobalEvents.OnRestartLevel.AddListener(RestartScene);
     }
 
     public static void RestartScene()

@@ -4,10 +4,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private GameObject _clickPanel;
 
     private Rigidbody2D rb2D;
     private float angle;
     float velocityY;
+
+    private void Awake()
+    {
+        GlobalEvents.OnPlayerHit.AddListener(HidePanel);
+    }
 
     private void Start()
     {
@@ -23,6 +29,11 @@ public class PlayerController : MonoBehaviour
             angle = velocityY * 5f;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    private void HidePanel(int score)
+    {
+        _clickPanel.SetActive(false);
     }
 
     public void OnScreenClick()

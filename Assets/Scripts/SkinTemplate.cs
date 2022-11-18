@@ -6,4 +6,5 @@ public class SkinTemplate
     public Image Image { get; set; }
     public Text Text { get; set; }
     public int ButtonID { get; set; }
+    public int PointsForUnlock { get; set; }
 }

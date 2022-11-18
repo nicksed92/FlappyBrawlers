@@ -9,6 +9,7 @@ public class SkinChanger : MonoBehaviour
     [SerializeField] private GameObject _skinTemplate;
     [SerializeField] private Transform _content;
     [SerializeField] private Sprite[] _skins;
+    [SerializeField] private int _ckinsCostMultiplier = 25;
 
     private Player _player;
     private RectTransform _rectTransform;
@@ -43,13 +44,16 @@ public class SkinChanger : MonoBehaviour
                 Button = template.transform.GetChild(1).GetComponent<Button>(),
                 Text = template.transform.GetChild(1).GetComponent<Button>().transform.GetChild(0).GetComponent<Text>(),
                 Image = template.transform.GetChild(0).GetComponent<Image>(),
-                ButtonID = i
+                ButtonID = i,
+                PointsForUnlock = i * _ckinsCostMultiplier
             };
 
             _skinTemplates.Add(skinTemplate);
 
             skinTemplate.Image.sprite = _skins[i];
             skinTemplate.Image.color = Color.black;
+
+            skinTemplate.Text.text = skinTemplate.PointsForUnlock.ToString();
 
             skinTemplate.Button.onClick.AddListener(() => EquipSkin(skinTemplate.ButtonID));
         }
@@ -74,6 +78,7 @@ public class SkinChanger : MonoBehaviour
     private void EquipSkin(int id)
     {
         _player.EquipedSkinID = id;
+        _player.GetComponent<SpriteRenderer>().sprite = _skins[id];
 
         ShowUnlockedSkins();
     }

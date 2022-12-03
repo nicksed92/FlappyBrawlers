@@ -6,4 +6,5 @@ public class GlobalEvents
     public static UnityEvent OnPlayerHit = new();
     public static UnityEvent OnRestartLevel = new();
     public static UnityEvent OnStartClicked = new();
+    public static UnityEvent<int, float> OnBonusPickedUp = new();
 }

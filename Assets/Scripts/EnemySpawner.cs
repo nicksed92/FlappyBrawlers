@@ -92,6 +92,11 @@ public class EnemySpawner : MonoBehaviour
     private void StopSpawn()
     {
         isSpawning = false;
+
+        foreach (Transform t in _container)
+        {
+            Destroy(t.gameObject);
+        }
     }
 
     private GameHard GetGameHard()

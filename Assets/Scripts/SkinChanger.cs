@@ -10,9 +10,20 @@ public class SkinChanger : MonoBehaviour
     [SerializeField] private GameObject _skinTemplate;
     [SerializeField] private Transform _content;
     [SerializeField] private int _ckinsCostMultiplier = 25;
+    [SerializeField] private GlobalStrings _globalStrings;
 
     private Player _player;
-    private List<SkinTemplate> _skinTemplates = new();
+    private List<SkinTemplate> _skinTemplates = new List<SkinTemplate>();
+
+    public int SkinTempatesCount { get { return _skinTemplates.Count; } }
+
+    public int GetLastSkinPrice()
+    {
+        if (_player.UnlockedSkinsID.Count == _skinTemplates.Count)
+            return 0;
+
+        return _skinTemplates[_player.UnlockedSkinsID[_player.UnlockedSkinsID.Count - 1] + 1].PointsForUnlock;
+    }
 
     private void Awake()
     {
@@ -76,11 +87,11 @@ public class SkinChanger : MonoBehaviour
         {
             _skinTemplates[i].Image.color = Color.white;
             _skinTemplates[i].Button.interactable = true;
-            _skinTemplates[i].Text.text = "Equip";
+            _skinTemplates[i].Text.text = _globalStrings.GetString("Equip");
 
             if (i == _player.EquipedSkinID)
             {
-                _skinTemplates[i].Text.text = "Equiped";
+                _skinTemplates[i].Text.text = _globalStrings.GetString("Equiped");
                 _skinTemplates[i].Button.interactable = false;
             }
         }

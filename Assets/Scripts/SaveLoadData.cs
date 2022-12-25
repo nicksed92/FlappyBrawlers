@@ -5,11 +5,15 @@ public class SaveLoadData : MonoBehaviour
 {
     private const string SkinsKey = "skin";
     private const string EquipedSkin = "equiped_skin";
+    private const string MaxScore = "max_score";
+    private const string CurrentScore = "current_score";
 
     public enum SaveType
     {
         Skins,
-        EquipedSkin
+        EquipedSkin,
+        MaxScore,
+        CurrentScore
     }
 
     public static void SaveList(List<int> list, SaveType type)
@@ -68,6 +72,14 @@ public class SaveLoadData : MonoBehaviour
 
             case SaveType.EquipedSkin:
                 result = EquipedSkin;
+                break;
+
+            case SaveType.MaxScore:
+                result = MaxScore;
+                break;
+
+            case SaveType.CurrentScore:
+                result = CurrentScore;
                 break;
         }
 

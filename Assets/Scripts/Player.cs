@@ -6,17 +6,17 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] private int _defaultPointsForSecond = 1;
+    [SerializeField] private int _pointsForSecond;
+    [SerializeField] private GameObject _bonusUI;
+    [SerializeField] private YandexSDK _yandexSDK;
+
     public int Score { get; private set; } = 0;
     public List<int> UnlockedSkinsID { get; private set; } = new List<int>();
     public int EquipedSkinID { get; set; } = 0;
 
-    [SerializeField] private int _defaultPointsForSecond = 1;
-    [SerializeField] private int _pointsForSecond;
-    [SerializeField] private GameObject _bonusUI;
-
     private Rigidbody2D _rigidbody2D;
     private bool isPlaying = true;
-
 
     public void SpendScore(int value)
     {
@@ -31,11 +31,6 @@ public class Player : MonoBehaviour
         SaveLoadData.SaveList(UnlockedSkinsID, SaveLoadData.SaveType.Skins);
     }
 
-    public void ScoreMultiplue(int multiplier, float duration)
-    {
-        _pointsForSecond *= multiplier;
-    }
-
     private void Awake()
     {
         EquipedSkinID = SaveLoadData.LoadInt(SaveLoadData.SaveType.EquipedSkin);
@@ -48,7 +43,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-
         _pointsForSecond = _defaultPointsForSecond;
     }
 
@@ -88,15 +82,18 @@ public class Player : MonoBehaviour
     private IEnumerator PointMultiply(int multiplier, float duration)
     {
         float timer = 0f;
+        _pointsForSecond = _defaultPointsForSecond;
         _pointsForSecond *= multiplier;
 
         _bonusUI.SetActive(true);
         _bonusUI.transform.GetChild(0).GetComponent<Text>().text = $"x{multiplier}";
 
+        WaitForSeconds waitForSeconds = new WaitForSeconds(1f);
+
         while (duration > timer && isPlaying)
         {
             timer++;
-            yield return new WaitForSeconds(1f);
+            yield return waitForSeconds;
         }
 
         _pointsForSecond = _defaultPointsForSecond;
@@ -109,5 +106,13 @@ public class Player : MonoBehaviour
 
         _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         _rigidbody2D.simulated = false;
+
+        int maxScore = SaveLoadData.LoadInt(SaveLoadData.SaveType.MaxScore);
+        SaveLoadData.SaveInt(Score, SaveLoadData.SaveType.CurrentScore);
+
+        if (Score > maxScore)
+        {
+            SaveLoadData.SaveInt(Score, SaveLoadData.SaveType.MaxScore);
+        }
     }
 }

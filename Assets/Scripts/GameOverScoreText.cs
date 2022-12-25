@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class GameOverScoreText : MonoBehaviour
 {
     [SerializeField] private Text _text;
+    [SerializeField] private GlobalStrings _globalStrings;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class GameOverScoreText : MonoBehaviour
 
     private void SetText(int score)
     {
-        _text.text = "Score: " + score.ToString();
+        //_text.text = "Score: " + score.ToString();
+        _text.text = $"{_globalStrings.GetString("Score")}: {score}";
     }
 }

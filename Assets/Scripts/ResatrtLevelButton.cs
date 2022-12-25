@@ -32,6 +32,5 @@ public class ResatrtLevelButton : MonoBehaviour
 
         if (score < price || price == 0)
             _button.SetActive(true);
-
     }
 }

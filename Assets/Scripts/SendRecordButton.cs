@@ -15,6 +15,7 @@ public class SendRecordButton : MonoBehaviour
     public void OnSendRecordButtonClick()
     {
         _yandexSDK.SendValueToLeaderBoard(_maxScore);
+        _button.interactable = false;
     }
 
     private void Awake()
@@ -37,10 +38,5 @@ public class SendRecordButton : MonoBehaviour
     private void Start()
     {
         _button = GetComponent<Button>();
-    }
-
-    private void OnEnable()
-    {
-
     }
 }

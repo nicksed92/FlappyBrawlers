@@ -5,14 +5,16 @@ public class GlobalStrings : MonoBehaviour
 {
     public Localization _localization;
 
+    [HideInInspector]
     public List<string> _stringsEN = new List<string>()
     {
-        "Equip", "Equiped", "Send", "Cancel"
+        "Equip", "Equiped", "Send", "Cancel", "Score"
     };
 
+    [HideInInspector]
     public List<string> _stringsRU = new List<string>()
     {
-        "Выбрать", "Выбрано", "Отправить", "Отмена"
+        "Выбрать", "Выбрано", "Отправить", "Отмена", "Счёт"
     };
 
     public string GetString(string example)

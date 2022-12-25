@@ -11,15 +11,15 @@ public class Localization : MonoBehaviour
     private void Awake()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        if (PlayerPrefs.HasKey("CurrentLanguage") == false)
-        {
             CurrentLanguage = GetLanguage();
+/*        if (PlayerPrefs.HasKey("CurrentLanguage") == false)
+        {
             PlayerPrefs.SetString("CurrentLanguage", CurrentLanguage);
         }
         else
         {
             CurrentLanguage = PlayerPrefs.GetString("CurrentLanguage");
-        }
+        }*/
 #endif
     }
 }

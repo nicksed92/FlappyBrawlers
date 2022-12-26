@@ -41,5 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2D.velocity = Vector2.zero;
         rb2D.velocity = Vector2.up * jumpForce;
+
+        SoundManager.Instance.PlaySound("Jump");
     }
 }

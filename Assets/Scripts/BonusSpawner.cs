@@ -9,7 +9,15 @@ public class BonusSpawner : MonoBehaviour
     [SerializeField] private Transform _container;
     [SerializeField] private Transform _spawnPoint;
 
-    private bool isSpawning = true;
+    private Bonus _currentBonus;
+
+    public void StopSpawn()
+    {
+        CancelInvoke(nameof(Spawn));
+
+        if (_currentBonus != null)
+            Destroy(_currentBonus.gameObject);
+    }
 
     private void Start()
     {
@@ -17,22 +25,13 @@ public class BonusSpawner : MonoBehaviour
         GlobalEvents.OnStartClicked.AddListener(StartSpawn);
     }
 
-    private void StopSpawn()
-    {
-        isSpawning = false;
-    }
-
     private void StartSpawn()
     {
-        StartCoroutine(Spawn());
+        InvokeRepeating(nameof(Spawn), _delay, _delay);
     }
 
-    private IEnumerator Spawn()
+    private void Spawn()
     {
-        while (isSpawning)
-        {
-            yield return new WaitForSeconds(_delay);
-            Instantiate(_bonus, _spawnPoint.localPosition, _bonus.transform.rotation, _container);
-        }
+        _currentBonus = Instantiate(_bonus, _spawnPoint.localPosition, _bonus.transform.rotation, _container);
     }
 }

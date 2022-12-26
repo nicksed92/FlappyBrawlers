@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] private BonusSpawner _bonusSpawner;
     [SerializeField] private int _defaultPointsForSecond = 1;
     [SerializeField] private int _pointsForSecond;
     [SerializeField] private GameObject _bonusUI;
@@ -81,6 +82,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator PointMultiply(int multiplier, float duration)
     {
+        SoundManager.Instance.PlaySound("BonusPickedUp");
         float timer = 0f;
         _pointsForSecond = _defaultPointsForSecond;
         _pointsForSecond *= multiplier;
@@ -88,12 +90,10 @@ public class Player : MonoBehaviour
         _bonusUI.SetActive(true);
         _bonusUI.transform.GetChild(0).GetComponent<Text>().text = $"x{multiplier}";
 
-        WaitForSeconds waitForSeconds = new WaitForSeconds(1f);
-
         while (duration > timer && isPlaying)
         {
             timer++;
-            yield return waitForSeconds;
+            yield return new WaitForSeconds(1f); ;
         }
 
         _pointsForSecond = _defaultPointsForSecond;
@@ -102,6 +102,9 @@ public class Player : MonoBehaviour
 
     private void GameOver()
     {
+        _bonusSpawner.StopSpawn();
+        SoundManager.Instance.StopAllMusic();
+
         isPlaying = false;
 
         _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;

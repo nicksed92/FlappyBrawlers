@@ -10,6 +10,9 @@ public class YandexSDK : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void SetLeaderBoardValue(int score);
 
+    [DllImport("__Internal")]
+    private static extern void ShowFullScreenAdv();
+
     public static UnityEvent<string> OnLeaderBoardGetData = new UnityEvent<string>();
 
     public void OnLeaderBoardButtonClick()
@@ -29,5 +32,13 @@ public class YandexSDK : MonoBehaviour
     public void GetLeaderBoardDataHandler(string data)
     {
         OnLeaderBoardGetData.Invoke(data);
+    }
+
+    private void Start()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+
+        ShowFullScreenAdv();
+#endif
     }
 }

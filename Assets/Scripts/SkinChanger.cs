@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class SkinChanger : MonoBehaviour
 {
@@ -76,7 +77,6 @@ public class SkinChanger : MonoBehaviour
             skinTemplate.Image.color = Color.black;
 
             skinTemplate.Text.text = skinTemplate.PointsForUnlock.ToString();
-
             skinTemplate.Button.onClick.AddListener(() => EquipSkin(skinTemplate.ButtonID));
         }
     }

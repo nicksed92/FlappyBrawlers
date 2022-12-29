@@ -21,6 +21,8 @@ public class GlobalStrings : MonoBehaviour
     {
         int index = _stringsEN.FindIndex(x => x.ToLower() == example.ToLower());
 
+        //Debug.LogError(index);
+
         if (_localization.CurrentLanguage == "ru")
             return _stringsRU[index];
         else

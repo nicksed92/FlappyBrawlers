@@ -13,7 +13,11 @@ public class YandexSDK : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void ShowFullScreenAdv();
 
+    [DllImport("__Internal")]
+    private static extern void ShowRewardedVideoAdv();
+
     public static UnityEvent<string> OnLeaderBoardGetData = new UnityEvent<string>();
+    public static UnityEvent OnShowRewardedVideoSuccesAdv = new UnityEvent();
 
     public void OnLeaderBoardButtonClick()
     {
@@ -29,9 +33,19 @@ public class YandexSDK : MonoBehaviour
 #endif
     }
 
+    public void OnShowRewardedVideoAdvClick()
+    {
+        ShowRewardedVideoAdv();
+    }
+
     public void GetLeaderBoardDataHandler(string data)
     {
         OnLeaderBoardGetData.Invoke(data);
+    }
+
+    public void ShowRewardedVideoAdvSuccesHandler()
+    {
+        OnShowRewardedVideoSuccesAdv.Invoke();
     }
 
     private void Start()

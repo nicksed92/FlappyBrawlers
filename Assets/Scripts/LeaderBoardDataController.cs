@@ -16,6 +16,7 @@ public class LeaderBoardDataController : MonoBehaviour
 
     private void OnLeaderBoardGetDataHandler(string data)
     {
+        _leaderBoard = ScriptableObject.CreateInstance<LeaderBoardData>();
         _leaderBoard = JsonConvert.DeserializeObject<LeaderBoardData>(data);
         OnLeaderBoardDataWritten.Invoke(_leaderBoard);
     }

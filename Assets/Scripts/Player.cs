@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,13 @@ public class Player : MonoBehaviour
 
         GlobalEvents.OnStartClicked.AddListener(OnGameStart);
         GlobalEvents.OnBonusPickedUp.AddListener(OnBonusPickedUpHendler);
+        YandexSDK.OnShowRewardedVideoSuccesAdv.AddListener(OnShowRewardedVideoSuccesAdvHandler);
+    }
+
+    private void OnShowRewardedVideoSuccesAdvHandler()
+    {
+        Score *= 2;
+        GlobalEvents.OnScoreChanged?.Invoke(Score);
     }
 
     private void Start()

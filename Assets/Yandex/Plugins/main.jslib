@@ -51,7 +51,7 @@ mergeInto(LibraryManager.library, {
         });
     },
 
-    ShowRewardedVideo: function () {
+    ShowRewardedVideoAdv: function () {
         ysdk.adv.showRewardedVideo({
             callbacks: {
                 onOpen: () => {
@@ -59,6 +59,8 @@ mergeInto(LibraryManager.library, {
               },
               onRewarded: () => {
                   console.log('Rewarded!');
+
+                  MyGameInstance.SendMessage('YandexSDK', 'ShowRewardedVideoAdvSuccesHandler');
               },
               onClose: () => {
                   console.log('Video ad closed.');

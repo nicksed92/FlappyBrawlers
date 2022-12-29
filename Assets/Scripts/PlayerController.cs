@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private float angle;
     float velocityY;
 
+    private bool _isCanJump = true;
+
     private void Awake()
     {
         GlobalEvents.OnPlayerHit.AddListener(HidePanel);
@@ -37,11 +39,21 @@ public class PlayerController : MonoBehaviour
         _clickPanel.SetActive(false);
     }
 
+    public void SetCanJumpState()
+    {
+        _isCanJump = true;
+    }
+
     public void OnScreenClick()
     {
-        rb2D.velocity = Vector2.zero;
-        rb2D.velocity = Vector2.up * jumpForce;
+        if (_isCanJump)
+        {
+            rb2D.velocity = Vector2.zero;
+            rb2D.velocity = Vector2.up * jumpForce;
 
-        SoundManager.Instance.PlaySound("Jump");
+            SoundManager.Instance.PlaySound("Jump");
+
+            _isCanJump = false;
+        }
     }
 }
